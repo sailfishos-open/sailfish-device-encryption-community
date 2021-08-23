@@ -1,0 +1,14 @@
+#!/bin/sh
+
+ENCIMG=$1
+MAPPER=$2
+
+for i in 1 2 3 4 5; do
+    echo Decrypt $ENCIMG: Attempt $i
+    systemd-ask-password --no-tty --id encryption:$1:0 "Encryption $ENCIMG: Password" |
+	cryptsetup --allow-discards luksOpen $ENCIMG $MAPPER && \
+	    echo Decrypted $ENCIMG && \
+	    exit 0
+done
+
+exit 1

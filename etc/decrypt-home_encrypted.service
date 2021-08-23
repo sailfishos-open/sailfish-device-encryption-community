@@ -1,0 +1,12 @@
+[Unit]
+Description=Decrypt /home
+Before=late-mount.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/sailfish-device-encryption-community/decrypt /encrypted.img home_encrypted
+Restart=no
+
+[Install]
+RequiredBy=late-mount.target
