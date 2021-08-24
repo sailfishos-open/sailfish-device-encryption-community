@@ -1,0 +1,31 @@
+#!/bin/sh
+
+## Derive a key from the standard input
+##
+## Use to encrypt and open LUKS containers as follows:
+##
+##  systemd-ask-password | hwcrypt-key keyname | cryptsetup luksOpen ...
+##
+## In practice, user input given in stdin is passed through scrypt,
+## then signed by hardware backed key, passed through scrypt again to
+## normalize it to 32 byte size.
+##
+
+HWCRYPT=/usr/libexec/droid-hybris/system/bin/hwcrypt
+HWCRYPT_USER=encryption-hwcrypt
+
+if [ "$#" -ne 1 ]; then
+    echo "Please specify key suffix"
+    exit 1
+fi
+
+KEY=luks-$1
+
+# su leads to message "pam_systemd(su:session): Using 600s D-Bus method call timeout"
+# in logs and no action when booting
+#    su $HWCRYPT_USER -s /bin/sh -c \
+#       "$HWCRYPT signkg --name=$KEY" < /dev/stdin
+
+systemd-run -q -P --uid=$HWCRYPT_USER \
+	    $HWCRYPT signkg --name=$KEY < /dev/stdin
+

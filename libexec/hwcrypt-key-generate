@@ -1,0 +1,21 @@
+#!/bin/sh
+
+## Generate new signing key that can be used for LUKS container
+## password derivation from user password
+
+HWCRYPT=/usr/libexec/droid-hybris/system/bin/hwcrypt
+HWCRYPT_USER=encryption-hwcrypt
+
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 keyname time-between-tries"
+    echo
+    echo "  keyname - unique name for this key"
+    echo "  time-between-tries - minimal amount of time in seconds between two hardware key operations"
+    exit 1
+fi
+
+KEY=luks-$1
+TIME=$2
+
+su $HWCRYPT_USER -s /bin/sh -c \
+   "$HWCRYPT generate-signkg --name=$KEY --time-between-tries=$TIME"

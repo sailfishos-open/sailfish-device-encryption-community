@@ -11,6 +11,7 @@ BuildArch:  noarch
 
 Requires:   cryptsetup
 Requires:   systemd-ask-password-gui
+Requires:   shadow-utils
 
 %description
 Support for storage encryption on SailfishOS. This is a community version.
@@ -32,10 +33,18 @@ cp -r systemd/*.wants %{buildroot}/%{_unitdir}
 
 mkdir -p %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community
 install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/decrypt
+install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/hwcrypt-key
+install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/hwcrypt-key-generate
 
 # config units - remove later from here
 mkdir -p %{buildroot}/%{_sysconfdir}/systemd/system
 cp -r etc/* %{buildroot}/%{_sysconfdir}/systemd/system
+
+%post
+getent group encryption-hwcrypt >/dev/null || groupadd -r encryption-hwcrypt
+getent passwd encryption-hwcrypt >/dev/null || \
+    useradd -r -g encryption-hwcrypt -b /var/empty --no-create-home -s /sbin/nologin \
+    -c "Sailfish Encryption HWCrypt" encryption-hwcrypt
 
 %files
 %defattr(-,root,root,-)
