@@ -9,5 +9,5 @@ formatted and used as /home.
 
 Dependencies:
 - cryptsetup
-- [systemd-ask-password-gui](https://github.com/rinigus/systemd-ask-password-gui)
-- recommended for HW assisted encryption: [hwcrypt](https://github.com/rinigus/hwcrypt)
+- [systemd-ask-password-gui](https://github.com/sailfishos-open/systemd-ask-password-gui)
+- recommended for HW assisted encryption: [hwcrypt](https://github.com/sailfishos-open/hwcrypt)
