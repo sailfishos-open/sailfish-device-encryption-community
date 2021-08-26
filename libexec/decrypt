@@ -3,21 +3,48 @@
 ENCIMG=$1
 MAPPER=$2
 
-for i in 1 2 3 4 5; do
-    echo Decrypt $ENCIMG: Attempt $i
+IDPREF=encryption:$ENCIMG
 
-    # without tmp variable, signing may fail on the first attempt with "no input available"
-    P=`systemd-ask-password --no-tty --id encryption:$1:0 "Encryption $ENCIMG: Hardware Backed Password"`
-    echo $P |
-	/usr/libexec/sailfish-device-encryption-community/hwcrypt-key $MAPPER |
-	cryptsetup --allow-discards --key-file=- luksOpen $ENCIMG $MAPPER && \
+plain_unlock() {
+    while true
+    do
+	PL=`systemd-ask-password --timeout=3600 --no-tty --id $IDPREF:1 "Encryption $ENCIMG: Recovery Password"`
+	echo $PL | \
+	    cryptsetup --allow-discards luksOpen $ENCIMG $MAPPER && \
 	    echo Decrypted $ENCIMG && \
 	    exit 0
+	echo Failed to unlock $ENCIMG with provided recovery password
+    done
+}
 
-    systemd-ask-password --no-tty --id encryption:$1:1 "Encryption $ENCIMG: Recovery Password" |
-	cryptsetup --allow-discards luksOpen $ENCIMG $MAPPER && \
+hwcrypt_unlock() {
+    while true
+    do
+	# without tmp variable, signing may fail on the first attempt with "no input available"
+	PHW=`systemd-ask-password --timeout=3600 --no-tty --id $IDPREF:0 "Encryption $ENCIMG: Password for Hardware Keystore"`
+	echo $PHW | \
+	    /usr/libexec/sailfish-device-encryption-community/hwcrypt-key $MAPPER | \
+	    cryptsetup --allow-discards --key-file=- luksOpen $ENCIMG $MAPPER && \
 	    echo Decrypted $ENCIMG && \
 	    exit 0
-done
+	echo Failed to unlock $ENCIMG with provided hwcrypt password
+    done
+}
 
-exit 1
+# request passwords - only one is sufficient to unlock
+
+plain_unlock &
+
+if [ -f /usr/libexec/droid-hybris/system/bin/hwcrypt ]; then
+    hwcrypt_unlock &
+fi
+
+# wait for one decryption to finish successfully
+wait -n
+jobs -p | xargs -r kill
+
+# clean up remaining ask password processes
+grep -l "Id=$IDPREF:" /run/systemd/ask-password/ask* | \
+    xargs -r grep "PID=" | cut -d'=' -f2 | xargs -r kill
+
+exit 0
