@@ -1,17 +1,7 @@
-#  SPDX-License-Identifier: LGPL-2.1+
-#
-#  This file is part of systemd.
-#
-#  systemd is free software; you can redistribute it and/or modify it
-#  under the terms of the GNU Lesser General Public License as published by
-#  the Free Software Foundation; either version 2.1 of the License, or
-#  (at your option) any later version.
-
 [Unit]
 Description=Late Mount
 Requires=basic.target
 Before=systemd-user-sessions.service
-OnFailure=reboot.target
 
 [Install]
 RequiredBy=multi-user.target systemd-user-sessions.service
