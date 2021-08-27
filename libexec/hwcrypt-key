@@ -6,26 +6,43 @@
 ##
 ##  systemd-ask-password | hwcrypt-key keyname | cryptsetup luksOpen ...
 ##
-## In practice, user input given in stdin is passed through scrypt,
-## then signed by hardware backed key, passed through scrypt again to
-## normalize it to 32 byte size.
+## In practice, user input given in stdin is passed through argon2,
+## then signed by hardware backed key.
 ##
 
 HWCRYPT=/usr/libexec/droid-hybris/system/bin/hwcrypt
 HWCRYPT_USER=encryption-hwcrypt
+ARGON_SETTINGS=/etc/sailfish-device-encryption-community/argon2.conf
 
 if [ "$#" -ne 1 ]; then
     echo "Please specify key suffix"
     exit 1
 fi
 
-KEY=luks-$1
+MAPPER=$1
+
+SALTFILE=/etc/sailfish-device-encryption-community/$MAPPER/hwcrypt/salt.conf
+if [ ! -f $SALTFILE ]; then
+    echo "Missing salt file $SALTFILE"
+fi
+
+KEY=luks-$MAPPER
+. $SALTFILE
+
+# Setup Argon2 configuration
+if [ -f $ARGON_SETTINGS ]; then
+    . $ARGON_SETTINGS
+fi
+
+ARGON_T=${ARGON_T:-6}
+ARGON_M=${ARGON_M:-14}
+ARGON_L=64 # no need to overwrite
 
 # su leads to message "pam_systemd(su:session): Using 600s D-Bus method call timeout"
 # in logs and no action when booting
 #    su $HWCRYPT_USER -s /bin/sh -c \
 #       "$HWCRYPT signkg --name=$KEY" < /dev/stdin
 
-systemd-run -q -P --uid=$HWCRYPT_USER \
-	    $HWCRYPT signkg --name=$KEY < /dev/stdin
-
+argon2 "$SALT" -id -l $ARGON_L -t $ARGON_T -m $ARGON_M -r < /dev/stdin | \
+    systemd-run -q -P --uid=$HWCRYPT_USER \
+		$HWCRYPT signkg --name=$KEY

@@ -12,6 +12,7 @@ BuildArch:  noarch
 Requires:   cryptsetup
 Requires:   systemd-ask-password-gui
 Requires:   shadow-utils
+Requires:   libargon2-tools
 
 %description
 Support for storage encryption on SailfishOS. This is a community version.
@@ -35,6 +36,7 @@ mkdir -p %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community
 install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/decrypt
 install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/hwcrypt-key
 install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/hwcrypt-key-generate
+install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/make-argon2-salt
 
 # config units - remove later from here
 mkdir -p %{buildroot}/%{_sysconfdir}/systemd/system
