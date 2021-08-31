@@ -26,9 +26,9 @@ rm -rf %{buildroot}
 
 # system wide units
 mkdir -p %{buildroot}/%{_unitdir}
-install -t %{buildroot}/%{_unitdir} systemd/late-mount.target
-install -t %{buildroot}/%{_unitdir} systemd/systemd-ask-password-gui.service
-install -t %{buildroot}/%{_unitdir} systemd/systemd-ask-password-gui-stop.service
+install -t %{buildroot}/%{_unitdir} --mode=644 systemd/late-mount.target
+install -t %{buildroot}/%{_unitdir} --mode=644 systemd/systemd-ask-password-gui.service
+install -t %{buildroot}/%{_unitdir} --mode=644 systemd/systemd-ask-password-gui-stop.service
 cp -r systemd/*.requires %{buildroot}/%{_unitdir}
 cp -r systemd/*.wants %{buildroot}/%{_unitdir}
 
