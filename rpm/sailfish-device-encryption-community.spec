@@ -19,6 +19,7 @@ Requires:   libargon2-tools
 Support for storage encryption on SailfishOS. This is a community version.
 
 %prep
+%setup -q -n %{name}-%{version}
 
 %build
 
