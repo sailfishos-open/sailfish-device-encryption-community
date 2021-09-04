@@ -8,7 +8,7 @@ IDPREF=encryption:$ENCIMG
 plain_unlock() {
     while true
     do
-	PL=`systemd-ask-password --timeout=3600 --no-tty --id $IDPREF:1 "Encryption $ENCIMG: Recovery Password"`
+	PL=`systemd-ask-password --timeout=3600 --no-tty --id $IDPREF:1 "Encryption $ENCIMG: Plain Text Password"`
 	echo $PL | \
 	    cryptsetup --allow-discards luksOpen $ENCIMG $MAPPER && \
 	    echo Decrypted $ENCIMG && \
@@ -35,7 +35,8 @@ hwcrypt_unlock() {
 
 plain_unlock &
 
-if [ -f /usr/libexec/droid-hybris/system/bin/hwcrypt ]; then
+if [ -f /usr/libexec/droid-hybris/system/bin/hwcrypt ] && \
+       [ -f /etc/sailfish-device-encryption-community/$MAPPER/hwcrypt/salt.conf ] ; then
     hwcrypt_unlock &
 fi
 
