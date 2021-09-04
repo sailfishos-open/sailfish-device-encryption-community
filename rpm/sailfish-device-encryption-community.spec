@@ -15,6 +15,8 @@ Requires:   sailfish-device-encryption-community-wizard
 Requires:   shadow-utils
 Requires:   libargon2-tools
 
+BuildRequires: systemd-rpm-macros
+
 %description
 Support for storage encryption on SailfishOS. This is a community version.
 
