@@ -27,22 +27,18 @@ Support for storage encryption on SailfishOS. This is a community version.
 rm -rf %{buildroot}
 
 # system wide units
-mkdir -p %{buildroot}/%{_unitdir}
-install -t %{buildroot}/%{_unitdir} --mode=644 systemd/late-mount.target
-install -t %{buildroot}/%{_unitdir} --mode=644 systemd/systemd-ask-password-gui.service
-install -t %{buildroot}/%{_unitdir} --mode=644 systemd/systemd-ask-password-gui-stop.service
-cp -r systemd/*.requires %{buildroot}/%{_unitdir}
-cp -r systemd/*.wants %{buildroot}/%{_unitdir}
+mkdir -p %{buildroot}%{_unitdir}
+install -t %{buildroot}%{_unitdir} --mode=644 systemd/late-mount.target
+install -t %{buildroot}%{_unitdir} --mode=644 systemd/systemd-ask-password-gui.service
+install -t %{buildroot}%{_unitdir} --mode=644 systemd/systemd-ask-password-gui-stop.service
+cp -r systemd/*.requires %{buildroot}%{_unitdir}
+cp -r systemd/*.wants %{buildroot}%{_unitdir}
 
-mkdir -p %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community
-install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/decrypt
-install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/hwcrypt-key
-install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/hwcrypt-key-generate
-install -t %{buildroot}/%{_libexecdir}/sailfish-device-encryption-community libexec/make-salt
-
-# config units - remove later from here
-mkdir -p %{buildroot}/%{_sysconfdir}/systemd/system
-cp -r etc/* %{buildroot}/%{_sysconfdir}/systemd/system
+mkdir -p %{buildroot}%{_libexecdir}/sailfish-device-encryption-community
+install -t %{buildroot}%{_libexecdir}/sailfish-device-encryption-community libexec/decrypt
+install -t %{buildroot}%{_libexecdir}/sailfish-device-encryption-community libexec/hwcrypt-key
+install -t %{buildroot}%{_libexecdir}/sailfish-device-encryption-community libexec/hwcrypt-key-generate
+install -t %{buildroot}%{_libexecdir}/sailfish-device-encryption-community libexec/make-salt
 
 %post
 getent group encryption-hwcrypt >/dev/null || groupadd -r encryption-hwcrypt
@@ -52,6 +48,5 @@ getent passwd encryption-hwcrypt >/dev/null || \
 
 %files
 %defattr(-,root,root,-)
-%{_unitdir}
 %{_libexecdir}
-%{_sysconfdir}
+%{_unitdir}
