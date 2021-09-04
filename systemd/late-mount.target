@@ -1,7 +1,8 @@
 [Unit]
 Description=Late Mount
 Requires=basic.target
-Before=systemd-user-sessions.service
+Before=late-mount-post.target
+After=late-mount-pre.target
 
 [Install]
-RequiredBy=multi-user.target systemd-user-sessions.service
+RequiredBy=late-mount-post.target

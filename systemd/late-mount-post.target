@@ -1,0 +1,6 @@
+[Unit]
+Description=Late Mount Post
+Before=systemd-user-sessions.service multi-user.target
+
+[Install]
+RequiredBy=multi-user.target systemd-user-sessions.service
