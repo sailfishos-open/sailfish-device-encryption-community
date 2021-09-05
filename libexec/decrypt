@@ -2,13 +2,14 @@
 
 ENCIMG=$1
 MAPPER=$2
+NAME="$3"
 
 IDPREF=encryption:$ENCIMG
 
 plain_unlock() {
     while true
     do
-	PL=`systemd-ask-password --timeout=3600 --no-tty --id $IDPREF:1 "Encryption $ENCIMG: Plain Text Password"`
+	PL=`systemd-ask-password --timeout=3600 --no-tty --id $IDPREF:1 "Encryption $NAME: Plain Text Password"`
 	echo $PL | \
 	    cryptsetup --allow-discards luksOpen $ENCIMG $MAPPER && \
 	    echo Decrypted $ENCIMG && \
@@ -21,7 +22,7 @@ hwcrypt_unlock() {
     while true
     do
 	# without tmp variable, signing may fail on the first attempt with "no input available"
-	PHW=`systemd-ask-password --timeout=3600 --no-tty --id $IDPREF:0 "Encryption $ENCIMG: Password for Hardware Keystore"`
+	PHW=`systemd-ask-password --timeout=3600 --no-tty --id $IDPREF:0 "Encryption $NAME: Password for Hardware Keystore"`
 	echo $PHW | \
 	    /usr/libexec/sailfish-device-encryption-community/hwcrypt-key $MAPPER | \
 	    cryptsetup --allow-discards --key-file=- luksOpen $ENCIMG $MAPPER && \
