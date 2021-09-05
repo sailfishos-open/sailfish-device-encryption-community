@@ -24,7 +24,7 @@ repository (sparse in config). Format described through example below:
 ```INI
 [home_device]
 name=Home
-device=/dev/sailfish/home-open
+device=/dev/sailfish/home_open
 mapper=home_encrypted
 mount=/home
 type=device
