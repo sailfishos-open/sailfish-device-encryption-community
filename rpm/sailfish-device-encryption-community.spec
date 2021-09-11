@@ -12,6 +12,8 @@ BuildArch:  noarch
 Requires:   cryptsetup
 Requires:   systemd-ask-password-gui
 Requires:   sailfish-device-encryption-community-wizard
+Requires:   sailfish-device-encryption-community-settings
+Requires:   sailfish-device-encryption-community-service
 Requires:   shadow-utils
 Requires:   libargon2-tools
 
