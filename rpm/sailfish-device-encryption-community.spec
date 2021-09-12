@@ -37,6 +37,7 @@ install -t %{buildroot}%{_unitdir} --mode=644 systemd/late-mount-pre.target
 install -t %{buildroot}%{_unitdir} --mode=644 systemd/late-mount-post.target
 install -t %{buildroot}%{_unitdir} --mode=644 systemd/late-mount.target
 install -t %{buildroot}%{_unitdir} --mode=644 systemd/systemd-ask-password-gui.service
+install -t %{buildroot}%{_unitdir} --mode=644 systemd/systemd-ask-password-gui.path
 install -t %{buildroot}%{_unitdir} --mode=644 systemd/systemd-ask-password-gui-stop.service
 install -t %{buildroot}%{_unitdir} --mode=644 systemd/sailfish-device-encryption-community-wizard.service
 cp -r systemd/*.requires %{buildroot}%{_unitdir}
