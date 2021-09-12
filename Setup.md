@@ -199,7 +199,32 @@ the showing setup windows as well.
 
 ### Factory image (devices with separate /home partition)
 
-_TODO_
+On Tama, factory image was removed leading to reduction of the
+generated image by the factor of 2. In addition, the partition that
+has been used for storing factory images can be used to extend PV of
+LVM storage.
+
+To disable factory image creation and addition to the generated ZIP,
+you would have to make changes in your droid-config:
+
+- add `Provides: jolla-settings-system-reset` to your droid-config
+  meta patterns.
+
+- commenting out image creation and removal of temporary files in
+  kickstart pack script. See implementation for Tama at
+  [pack/hybris](https://github.com/sailfishos-sony-tama/droid-config-sony-tama-pie/blob/hybris-10/kickstart/pack/h8216/hybris)
+
+- remove creation of fimage partition in kickstart/part. See
+  [example](https://github.com/sailfishos-sony-tama/droid-config-sony-tama-pie/blob/hybris-10/kickstart/part/h8216)
+
+- remove fimage from flash scripts. Examples at
+  [flash.sh](https://github.com/sailfishos-sony-tama/droid-config-sony-tama-pie/blob/hybris-10/sparse/boot/flash.sh)
+  and
+  [flash-on-windows.bat](https://github.com/sailfishos-sony-tama/droid-config-sony-tama-pie/blob/hybris-10/sparse/boot/flash-on-windows.bat).
+
+If it is preferred to keep factory image generation and flashing then
+you would have to investigate which scripts would have to be modified
+to ensure that the factory reset works as it should.
 
 
 ## nemo-qml-plugin-systemsettings (devices with separate /home partition)
