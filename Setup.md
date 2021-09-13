@@ -40,6 +40,16 @@ port:
 
 I hope that these packages can later be pushed into "common"
 repositories (devel and testing) making this step unnecessary.
+For now, packages can be added by `osc`:
+```
+osc -A https://api.merproject.org copypac nemo:devel:hw:sony:tama:aosp10 libsfosdevenc nemo:devel:hw:$VENDOR:$DEVICE
+osc -A https://api.merproject.org copypac nemo:devel:hw:sony:tama:aosp10 sailfish-device-encryption-community nemo:devel:hw:$VENDOR:$DEVICE
+osc -A https://api.merproject.org copypac nemo:devel:hw:sony:tama:aosp10 sailfish-device-encryption-community-service nemo:devel:hw:$VENDOR:$DEVICE
+osc -A https://api.merproject.org copypac nemo:devel:hw:sony:tama:aosp10 sailfish-device-encryption-community-settings nemo:devel:hw:$VENDOR:$DEVICE
+osc -A https://api.merproject.org copypac nemo:devel:hw:sony:tama:aosp10 sailfish-device-encryption-community-wizard nemo:devel:hw:$VENDOR:$DEVICE
+osc -A https://api.merproject.org copypac nemo:devel:hw:sony:tama:aosp10 systemd-ask-password-gui nemo:devel:hw:$VENDOR:$DEVICE
+```
+
 
 To include packages into the build, add
 ```
