@@ -24,6 +24,7 @@ MAPPER=$1
 SALTFILE=/etc/sailfish-device-encryption-community/$MAPPER/hwcrypt/salt.conf
 if [ ! -f $SALTFILE ]; then
     echo "Missing salt file $SALTFILE"
+    exit 2
 fi
 
 KEY=luks-$MAPPER

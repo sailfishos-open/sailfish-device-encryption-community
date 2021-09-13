@@ -1,7 +1,9 @@
 #!/bin/sh
 
 ## Generate new signing key that can be used for LUKS container
-## password derivation from user password
+## password derivation from user password. In addition, generate
+## salt for argon. This script will generate key/salt only if they
+## are missing. Existing key/salt will not trigger an error
 
 HWCRYPT=/usr/libexec/droid-hybris/system/bin/hwcrypt
 HWCRYPT_USER=encryption-hwcrypt
@@ -17,5 +19,16 @@ fi
 KEY=luks-$1
 TIME=$2
 
+# generate argon2 salt if needed
+SALTFILE=/etc/sailfish-device-encryption-community/$MAPPER/hwcrypt/salt.conf
+if [ ! -f $SALTFILE ]; then
+    `dirname $0`/make-salt $SALTFILE
+fi
+
+# exit if key is available already
 su $HWCRYPT_USER -s /bin/sh -c \
-   "$HWCRYPT generate-signkg --name=$KEY --time-between-tries=$TIME"
+   "$HWCRYPT haskey --name=$KEY" && exit 0
+
+# generate key if missing
+su $HWCRYPT_USER -s /bin/sh -c \
+   "$HWCRYPT generate-signkg --name=$KEY --time-between-tries=$TIME" || exit 1
