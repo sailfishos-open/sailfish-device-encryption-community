@@ -16,19 +16,22 @@ if [ "$#" -ne 2 ]; then
     exit 1
 fi
 
-KEY=luks-$1
+MAPPER=$1
+KEY=luks-$MAPPER
 TIME=$2
 
 # generate argon2 salt if needed
 SALTFILE=/etc/sailfish-device-encryption-community/$MAPPER/hwcrypt/salt.conf
 if [ ! -f $SALTFILE ]; then
-    `dirname $0`/make-salt $SALTFILE
+    `dirname $0`/make-salt $SALTFILE || exit 1
 fi
 
 # exit if key is available already
-su $HWCRYPT_USER -s /bin/sh -c \
-   "$HWCRYPT haskey --name=$KEY" && exit 0
+systemd-run -q -P --uid=$HWCRYPT_USER \
+	    $HWCRYPT haskey --name=$KEY \
+    && exit 0
 
 # generate key if missing
-su $HWCRYPT_USER -s /bin/sh -c \
-   "$HWCRYPT generate-signkg --name=$KEY --time-between-tries=$TIME" || exit 1
+systemd-run -q -P --uid=$HWCRYPT_USER \
+	    $HWCRYPT generate-signkg --name=$KEY --time-between-tries=$TIME \
+    || exit 1
