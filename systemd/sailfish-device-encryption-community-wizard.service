@@ -1,7 +1,5 @@
 [Unit]
 Description=Device Encryption Setup Wizard
-After=wait_for_keymaster.service droid-late-start.service
-Requires=wait_for_keymaster.service droid-late-start.service
 Before=late-mount-pre.target
 
 [Service]

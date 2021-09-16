@@ -23,6 +23,13 @@ BuildRequires: cmake
 %description
 Support for storage encryption on SailfishOS. This is a community version.
 
+%package droid
+Summary:    Droid based device support for %{name}
+Requires:   %{name} = %{version}
+
+%description droid
+Additional configuration for Hybris devices. Support for %{name}
+
 %prep
 %setup -q -n %{name}-%{version}
 
@@ -41,6 +48,7 @@ install -t %{buildroot}%{_unitdir} --mode=644 systemd/systemd-ask-password-gui.p
 install -t %{buildroot}%{_unitdir} --mode=644 systemd/systemd-ask-password-gui-stop.service
 install -t %{buildroot}%{_unitdir} --mode=644 systemd/sailfish-device-encryption-community-wizard.service
 cp -r systemd/*.requires %{buildroot}%{_unitdir}
+cp -r systemd/*.d %{buildroot}%{_unitdir}
 
 mkdir -p %{buildroot}%{_libexecdir}/sailfish-device-encryption-community
 install -t %{buildroot}%{_libexecdir}/sailfish-device-encryption-community libexec/decrypt
@@ -57,4 +65,12 @@ getent passwd encryption-hwcrypt >/dev/null || \
 %files
 %defattr(-,root,root,-)
 %{_libexecdir}
-%{_unitdir}
+%{_unitdir}/*.target
+%{_unitdir}/*.service
+%{_unitdir}/*.path
+%{_unitdir}/*.requires
+
+
+%files droid
+%defattr(-,root,root,-)
+%{_unitdir}/*.d/10-droid.conf

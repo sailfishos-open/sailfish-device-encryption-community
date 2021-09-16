@@ -55,7 +55,11 @@ To include packages into the build, add
 ```
 Requires: sailfish-device-encryption-community
 ```
-into your patterns (droid-config).
+into your patterns (droid-config). For hybris-based ports, you
+have to add also
+```
+Requires: sailfish-device-encryption-community-droid
+```
 
 
 ## Changes in droid-config
