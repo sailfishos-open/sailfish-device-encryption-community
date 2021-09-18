@@ -1,6 +1,8 @@
 [Unit]
 Description=Device Encryption Setup Wizard
 Before=late-mount-pre.target
+ConditionPathExists=!/run/systemd/boot-status/ACT_DEAD
+ConditionPathExists=!/run/systemd/boot-status/TEST
 
 [Service]
 Type=oneshot
