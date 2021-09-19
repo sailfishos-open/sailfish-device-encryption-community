@@ -55,6 +55,7 @@ install -t %{buildroot}%{_libexecdir}/sailfish-device-encryption-community libex
 install -t %{buildroot}%{_libexecdir}/sailfish-device-encryption-community libexec/hwcrypt-key
 install -t %{buildroot}%{_libexecdir}/sailfish-device-encryption-community libexec/hwcrypt-key-generate
 install -t %{buildroot}%{_libexecdir}/sailfish-device-encryption-community libexec/make-salt
+install -t %{buildroot}%{_libexecdir}/sailfish-device-encryption-community libexec/mount-tmp
 
 %post
 getent group encryption-hwcrypt >/dev/null || groupadd -r encryption-hwcrypt

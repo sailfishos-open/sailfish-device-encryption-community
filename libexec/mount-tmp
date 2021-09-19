@@ -3,4 +3,4 @@
 MOUNTPOINT=$1
 
 TDIR=`mktemp -d`
-mount --bind $TDIR /home || exit 1
+mount --bind $TDIR "$MOUNTPOINT" || exit 1
