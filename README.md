@@ -33,6 +33,9 @@ Project consists of several packages:
 - [settings](https://github.com/sailfishos-open/sailfish-device-encryption-community-settings):
   GUI in Sailfish Settings for encrypted devices.
 
+- [generator](https://github.com/sailfishos-open/sailfish-device-encryption-community-generator):
+  SystemD generator used to create unit files on boot.
+
 - [libsfosdevenc](https://github.com/sailfishos-open/libsfosdevenc):
   Support library used by the wizard and the service to handle
   encryption of the devices.

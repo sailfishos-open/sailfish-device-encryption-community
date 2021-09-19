@@ -1,7 +1,7 @@
 Name:       sailfish-device-encryption-community
 
 Summary:    Sailfish Device Encryption Community
-Version:    0.1
+Version:    1.0
 Release:    1
 License:    GPLv2
 URL:        https://github.com/rinigus/sailfish-device-encryption-community
@@ -14,6 +14,7 @@ Requires:   systemd-ask-password-gui
 Requires:   sailfish-device-encryption-community-wizard
 Requires:   sailfish-device-encryption-community-settings
 Requires:   sailfish-device-encryption-community-service
+Requires:   sailfish-device-encryption-community-generator
 Requires:   shadow-utils
 Requires:   libargon2-tools
 
